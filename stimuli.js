@@ -23,8 +23,8 @@ const practice_items = [
 
 // note that in these group definitions:
 
-//latin1: id 1 UNGRAM, id 4 gets GRAMM
-//latin2: id 1 GRAMM, id 4 gets UNGRAM
+// latin1: id 1 UNGRAM, id 4 gets GRAMM
+// latin2: id 1 GRAMM, id 4 gets UNGRAM
 
 // fillers are all identical
 const latin1 = [
