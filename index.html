@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych-moving-window.js"></script>
+    <script src="jspsych/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="js/stimuli.js"></script>
+<!--     <script src="js/fixation.js"></script> -->
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+<!--     <link rel="stylesheet" href="css/canvas.html">
+ -->  </head>
+  <body></body>
+  <script>
+
+    var timeline = [];
+
+    //from js/stimuli.js
+    var pract = practiceItems;
+    var test = testItems;
+
+    var instruction = {
+      type: 'html-button-response',
+      stimulus: '<h1>Pace your own saccades</h1>'+
+        "<h2>Self paced reading instructions</h2><BR><BR>" + 
+        '<p>Use the [spacebar] to pace new words</p>' + 
+        '<p>Answer a question -----every now and then------ </p>',
+      choices: ['I am a little lost, still, but sure, i will try']
+    }
+
+
+    timeline.push(instruction);
+
+
+    var presentStory = {
+      type: 'moving-window',
+      words: jsPsych.timelineVariable('words')
+    }
+
+    var presentQuestion = {
+    type: 'html-button-response',
+    stimulus: jsPsych.timelineVariable('question'),
+    choices: jsPsych.timelineVariable('choices'),
+    button_html: '<button class="jspsych-btn">%choice%</button>',
+    prompt: "<p>Choose somthing...</p>",
+    trial_duration: 10000,
+    data: {
+      condition: jsPsych.timelineVariable('condition'),
+      trial_part: 'presentQuestions',
+      task_part: jsPsych.timelineVariable('part'),
+      correct_response : jsPsych.timelineVariable('correct')
+    },
+    on_finish: function(data) {
+        var acc = false;
+        var used_button = data.button_pressed;
+        var given_response = jsPsych.timelineVariable('choices')[used_button];
+
+        if (data.correct_response == data.button_pressed) {
+            acc = true;
+        }
+
+        data.accuracy = acc;
+        console.log(data.accuracy)
+      }
+    }; 
+
+    var presentFeedback = {
+      type: 'html-keyboard-response',
+      stimulus: function() {
+        var feedback_text = '<span style="color:red;font-size:30px;">Incorrect.</span>'
+        var last_resp_acc = jsPsych.data.getLastTrialData().values()[0].accuracy;
+        if (last_resp_acc == true) {
+            feedback_text = '<span style="color:green;font-size:30px;">Correct!</span>'
+        }
+        return feedback_text;
+      },
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 1000
+    };
+
+    var practiceProcedure = {
+      timeline: [presentStory, presentQuestion, presentFeedback],
+      timeline_variables: pract,
+      randomize_order: true
+    };
+
+    //timeline.push(practiceProcedure);
+
+
+    var instructionFeedback = {
+      type: 'html-button-response',
+      stimulus: '<p>We could do things here to defide how to proceed with you, based upon data...</p>'+
+      "<p>But we won't fix this today.</p><BR><BR><h1>So, well done!</h1><BR><p>let's do this for real!</p>",
+      choices: ['Click me for more crazy words']
+    }
+    timeline.push(instructionFeedback);
+
+    var testProcedure = {
+      timeline: [presentStory, presentQuestion],
+      timeline_variables: test,
+      randomize_order: true
+    };
+
+    timeline.push(testProcedure);
+
+    var debrief = {
+      type: 'html-keyboard-response',
+      choices: ['c'],
+      stimulus: '<html>' +' <canvas><link rel="stylesheet" href="css/canvas.html"></canvas>' +
+      '</head>' +
+      '<body>' +
+      '<canvas id="myCanvas" width="666" height="666"></canvas>' +
+      '<h1>This is a heading (h1   {color: rgba(0.4, 0.8, 0.8, 1);}) </h1>' +
+      '<p>This is a paragraph.</p>' +
+      '<h2>This is a heading2 (h2   {color: rgba(0.4, 0.8, 0.8, 0.8);}) </h2>' +
+      '<p>This is a paragraph.</p>' +
+      '<h3>This is a heading3 (h3   {color: rgba(0.4, 0.8, 0.8, 0.6);}) </h3>' +
+      '<p>This is a paragraph.</p>' +
+      '<h4>This is a heading h4   {color: rgba(0.4, 0.8, 0.8, 0.4);} </h4>' +
+      '<p>This is a paragraph.</p>' +
+      '<h5>This is luminance and contrast</h5>' +
+      '</body>' + '</html>'
+    };
+    
+    timeline.push(debrief);
+
+    jsPsych.init({
+      timeline: timeline,
+      on_finish: function(){
+        jsPsych.data.displayData()
+      }
+    })
+  </script>
+</html>
