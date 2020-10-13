@@ -1,52 +1,85 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="jspsych/jspsych.js"></script>
+    <title>Self-Paced Reading</title>
+    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/jspsych.js"></script>
+    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/plugins/jspsych-html-button-response.js"></script>
+    <link href="https://web-experiments.lab.hum.uu.nl/jspsych/6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"/>
+    
+    <!-- 'custom' plugin -->
     <script src="jspsych-moving-window.js"></script>
-    <script src="jspsych/plugins/jspsych-html-button-response.js"></script>
-    <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
-    <script src="js/stimuli.js"></script>
-<!--     <script src="js/fixation.js"></script> -->
-    <link rel="stylesheet" href="jspsych/css/jspsych.css">
-<!--     <link rel="stylesheet" href="css/canvas.html">
- -->  </head>
+
+
+    <!-- Uil OTS scripts -->
+    <script src="stimuli.js"></script>
+    <script src="globals.js"></script>
+    <script src="instructions.js"></script>
+
+    <!-- custom styling: font -->
+    <style>
+    .stimulus { font-size: 30px; 
+                font-family: monospace, monospace;
+              }
+    </style>
+</head>
   <body></body>
   <script>
+    //////////////// stimulus.js /////////////////////////////////
+    
+    var stimuli = select_group();
+    console.log(stimuli)
 
-    var timeline = [];
+    // data one would like to add to __all__ trials, according to:
+    // https://www.jspsych.org/overview/data/
+    var subject_id = jsPsych.randomization.randomID(8);
+    var group_assigned = stimuli.group_name;
 
-    //from js/stimuli.js
-    var pract = practiceItems;
-    var test = testItems;
+    // record the condition assignment in the jsPsych data
+    // this adds a property called 'subject' and a property called 'conditio' to every trial
+    jsPsych.data.addProperties(
+    {
+      subject: subject_id,
+      condition: group_assigned
+    });
 
-    var instruction = {
+    //////////////// test page flows ///////////////////////////////
+    
+    var start_screen = {
       type: 'html-button-response',
-      stimulus: '<h1>Pace your own saccades</h1>'+
-        "<h2>Self paced reading instructions</h2><BR><BR>" + 
-        '<p>Use the [spacebar] to pace new words</p>' + 
-        '<p>Answer a question -----every now and then------ </p>',
-      choices: ['I am a little lost, still, but sure, i will try']
-    }
+      stimulus: PRE_PRACTICE_INSTRUCTION, 
+      choices: [OK_BUTTON_TEXT],
+      response_ends_trial: true
+    };
+    
+    var well_done_screen = {
+      type: 'html-button-response',
+      stimulus: POST_PRACTICE_INSTRUCTION, 
+      choices: [OK_BUTTON_TEXT],
+      response_ends_trial: true
+    };
 
+    var end_screen = {
+      type: 'html-keyboard-response',
+      stimulus: "Thanks, you're done. Press spacebar to see data", 
+      choices: ['space']
+    };
 
-    timeline.push(instruction);
-
-
-    var presentStory = {
+    var present_story = {
       type: 'moving-window',
       words: jsPsych.timelineVariable('words')
     }
 
-    var presentQuestion = {
+    var present_question_or_statement = {
     type: 'html-button-response',
-    stimulus: jsPsych.timelineVariable('question'),
+    stimulus: jsPsych.timelineVariable('question_or_statement'),
     choices: jsPsych.timelineVariable('choices'),
     button_html: '<button class="jspsych-btn">%choice%</button>',
-    prompt: "<p>Choose somthing...</p>",
+    prompt: "",
     trial_duration: 10000,
     data: {
       condition: jsPsych.timelineVariable('condition'),
-      trial_part: 'presentQuestions',
+      trial_part: 'present_question_or_statement',
       task_part: jsPsych.timelineVariable('part'),
       correct_response : jsPsych.timelineVariable('correct')
     },
@@ -60,11 +93,11 @@
         }
 
         data.accuracy = acc;
-        console.log(data.accuracy)
+        //console.log(data.accuracy)
       }
     }; 
 
-    var presentFeedback = {
+    var present_feedback = {
       type: 'html-keyboard-response',
       stimulus: function() {
         var feedback_text = '<span style="color:red;font-size:30px;">Incorrect.</span>'
@@ -78,30 +111,22 @@
       trial_duration: 1000
     };
 
-    var practiceProcedure = {
-      timeline: [presentStory, presentQuestion, presentFeedback],
-      timeline_variables: pract,
-      randomize_order: true
+    var practice_procedure = {
+      timeline: [
+        present_story, 
+        present_question_or_statement,
+        present_feedback
+        ],
+      timeline_variables: practice_items,
+      randomize_order: false
     };
 
-    //timeline.push(practiceProcedure);
 
-
-    var instructionFeedback = {
-      type: 'html-button-response',
-      stimulus: '<p>We could do things here to defide how to proceed with you, based upon data...</p>'+
-      "<p>But we won't fix this today.</p><BR><BR><h1>So, well done!</h1><BR><p>let's do this for real!</p>",
-      choices: ['Click me for more crazy words']
-    }
-    timeline.push(instructionFeedback);
-
-    var testProcedure = {
-      timeline: [presentStory, presentQuestion],
-      timeline_variables: test,
+    var test_procedure = {
+      timeline: [present_story, present_question_or_statement],
+      timeline_variables: stimuli.table,
       randomize_order: true
     };
-
-    timeline.push(testProcedure);
 
     var debrief = {
       type: 'html-keyboard-response',
@@ -121,6 +146,17 @@
       '<h5>This is luminance and contrast</h5>' +
       '</body>' + '</html>'
     };
+
+    // timeline
+    var timeline = [];
+
+    timeline.push(start_screen)
+    //timeline.push(practice_procedure)
+    //timeline.push(well_done_screen)
+    timeline.push(test_procedure)
+    timeline.push(end_screen)
+
+
     
     timeline.push(debrief);
 

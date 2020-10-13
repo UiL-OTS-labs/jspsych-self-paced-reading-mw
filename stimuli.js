@@ -49,7 +49,6 @@ const latin1 = [
         correct: 1 
     },
     {
-    
         type: "moving-window",
         part: "test",
         condition: "FILLER",
@@ -114,11 +113,15 @@ const latin2 = [
     }
 ];
 
+const groups = ["group1", "group2"];
+
 
 const test_items = [
     {group_name: groups[0], table: latin1},
     {group_name: groups[1], table: latin2}
 ];
+
+
 
 /**
  * Get the list of practice items
@@ -153,3 +156,4 @@ function select_group() {
     var retgroup = test_items[shuffled_range[0]];
     return retgroup
 }
+
