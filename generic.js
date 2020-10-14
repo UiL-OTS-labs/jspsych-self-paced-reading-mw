@@ -32,12 +32,30 @@ function shuffle(a) {
 }
 
 /**
- * Creates an array of N items, of which the (closest) proportion 
- * of items has the value true, and the other (1-proportion) of items
+ * Creates an array of N items, of which the first (closest) proportion 
+ * of items has the value true, and the other (N-proportion) of items
  * has the value false.
  * @param {Float} proportion A proportion of true elements.
  * @param {Integer} N The number of items in the output array.
  */
-function createBooleanArrayAfterPercentage(percentage, N) {
-	
+function createBooleanArrayAfterPercentage(proportion, N) {
+	var trueValues = Math.floor(proportion * N)
+	var falseValues = N - trueValues
+
+	let outArray = [];
+
+	for(var i=0; i<trueValues;i++){
+		outArray.push(true);
+	}
+	for(var i=0; i<falseValues;i++){
+		outArray.push(false);
+	}
+	return outArray;
 }
+//
+var p = 0.25;
+var n = 40;
+
+var myoutArray = createBooleanArrayAfterPercentage(p, n);
+console.log(myoutArray)
+
