@@ -39,12 +39,14 @@
     var group_assigned = stimuli.group_name;
 
     // record the condition assignment in the jsPsych data
-    // this adds a property called 'subject' and a property called 'conditio' to every trial
+    // this adds a property called 'subject' and a property called 'group' to every trial
     jsPsych.data.addProperties(
     {
       subject: subject_id,
       group: group_assigned,
-      condition: jsPsych.timelineVariable('condition')
+      task_part: jsPsych.timelineVariable('part'),
+      condition: jsPsych.timelineVariable('condition'),
+      id: jsPsych.timelineVariable('id')
     });
 
     //////////////// test page flows ///////////////////////////////
@@ -71,48 +73,42 @@
 
     var present_story = {
       type: 'moving-window',
-      words: jsPsych.timelineVariable('words')
-    }
-
-    //Usually this is done with "vanilla" JS code, not jsPsych specific code. For example, you might define two sets of trials:
-//     var a_trials = [, trial_2, trial_3];
-//     var b_trials = [trial_4, trial_5, trial_6];
-
-// Then use an if statement to push only the relevant trials onto the timeline.
-
-// if(subjectID%2 == 0){
-//   timeline = timeline.concat(a_trials);
-// } else {
-//   timeline = timeline.concat(b_trials);
-// }
-
-
-    var present_question_or_statement = {
-    type: 'html-button-response',
-    stimulus: jsPsych.timelineVariable('question_or_statement'),
-    choices: jsPsych.timelineVariable('choices'),
-    button_html: '<button class="jspsych-btn">%choice%</button>',
-    prompt: "",
-    trial_duration: 10000,
-    data: {
+      words: jsPsych.timelineVariable('words'),
+      key: 32,
       condition: jsPsych.timelineVariable('condition'),
-      trial_part: 'present_question_or_statement',
-      task_part: jsPsych.timelineVariable('part'),
-      correct_response : jsPsych.timelineVariable('correct')
-    },
-    on_finish: function(data) {
-        var acc = false;
-        var used_button = data.button_pressed;
-        var given_response = jsPsych.timelineVariable('choices')[used_button];
-
-        if (data.correct_response == data.button_pressed) {
-            acc = true;
-        }
-
-        data.accuracy = acc;
-        //console.log(data.accuracy)
+      id: jsPsych.timelineVariable('id'),
+      data: {
+        condition: jsPsych.timelineVariable('condition'),
+        trial_part: 'present_story',
+        id: jsPsych.timelineVariable('id')
+      }
+    };
+    
+    var present_question_or_statement = {
+      type: 'html-button-response',
+      stimulus: jsPsych.timelineVariable('question_or_statement'),
+      choices: jsPsych.timelineVariable('choices'),
+      button_html: '<button class="jspsych-btn">%choice%</button>',
+      prompt: "",
+      trial_duration: 10000,
+      data: {
+        condition: jsPsych.timelineVariable('condition'),
+        trial_part: 'present_question_or_statement',
+        task_part: jsPsych.timelineVariable('part'),
+        correct_response : jsPsych.timelineVariable('correct')
       },
-    }; 
+      on_finish: function(data) {
+          var acc = false;
+          var used_button = data.button_pressed;
+          var given_response = jsPsych.timelineVariable('choices')[used_button];
+
+          if (data.correct_response == data.button_pressed) {
+              acc = true;
+          }
+
+          data.accuracy = acc;
+        },
+      }; 
 
     var present_feedback = {
       type: 'html-keyboard-response',
@@ -138,40 +134,17 @@
       randomize_order: false
     };
 
-    // now, i'm unsure what will be best here....
-
-
-
-
-    // var test_procedure_noextra = {
-    //   timeline: conditional_timeline,
-    //   timeline_variables: stimuli.table,
-    //   randomize_order: false
-    // };
-
-    // var test_procedure_extra = {
-    //   timeline: [present_story, present_question_or_statement],
-    //   timeline_variables: stimuli.table,
-    //   randomize_order: false
-    // };
-
-
-
-    // timeline
-    var timeline = [];
-
-
-    ////////////////////////////////////
-
-            //generic/precalc?
+    ////////////////////////////////////////////////////////////////////
+    // timeline     ////////////////////////////////////
+    var timeline = []; 
+    
     var p = PROPORTION_QUESTION_OR_STATEMENT;
     var n = stimuli.table.length
     
-    console.log('n')
-    console.log(n)
-
     var nonrandomArray = createBooleanArrayAfterPercentage(p, n);
     var shuffledArray = randomArrayShuffle(nonrandomArray);
+
+    //var sub_timeline = [];//check/fix this concept
 
     for (var i = 0; i < shuffledArray.length; i++) {
       if (i == true){
@@ -182,20 +155,21 @@
       }
     };
 
-    var test_procedure = {
-      timeline: sub_timeline,
-      timeline_variables: stimuli.table,
-      randomize_order: false
-    };
-    ///////////////////////////////////
+    console.log(sub_timeline);
 
+    var test_procedure = {
+      timeline: sub_timeline, //it used to work , but not quite?
+      timeline_variables: stimuli.table,
+      randomize_order: true
+    };
+
+    ////////////////////////////////////////////////////////////////////
+    //pushing things ////////////////////////////////////
 
     timeline.push(start_screen)
-    // timeline.push(practice_procedure)
-    // timeline.push(well_done_screen)
-    timeline.push(test_procedure)
-
-
+    timeline.push(practice_procedure)
+    timeline.push(well_done_screen)
+    timeline.push(test_procedure)//to fix q incidence
     timeline.push(end_screen)
 
     jsPsych.init({

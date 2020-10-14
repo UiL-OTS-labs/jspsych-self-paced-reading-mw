@@ -16,7 +16,15 @@ jsPsych.plugins["moving-window"] = (function() {
       key: {
         type: jsPsych.plugins.parameterType.KEYCODE,
         default: 32 // spacebar
-      }
+      },
+      condition: {
+        type: jsPsych.plugins.parameterType.STRING,
+        default: undefined
+      },
+      id: {
+        type: jsPsych.plugins.parameterType.STRING,
+        default: undefined
+      }      
     }
   }
 
@@ -24,7 +32,9 @@ jsPsych.plugins["moving-window"] = (function() {
 
     // data saving
     var trial_data = {
-      words: trial.words
+      words: trial.words,
+      condition: trial.condition, 
+      id: trial.id
     };
     var rt = [];
     var current_position = 0;

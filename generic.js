@@ -12,10 +12,6 @@ function randomArrayShuffle(array) {
   return array;
 }
 
-
-//var alphabet=["a","b","c","d","e"];
-//randomArrayShuffle(alphabet);
-
 /**
  * Shuffles array in place.
  * @param {Array} a items An array containing the items.
@@ -31,12 +27,15 @@ function shuffle(a) {
     return a;
 }
 
+
+// maybe not the best idea...
+
 /**
  * Creates an array of N items, of which the first (closest) proportion 
  * of items has the value true, and the other (N-proportion) of items
  * has the value false.
  * @param {Float} proportion A proportion of true elements.
- * @param {Integer} N The number of items in the output array.
+ * @param (Integer) N The number of items in the output array.
  */
 function createBooleanArrayAfterPercentage(proportion, N) {
 	var trueValues = Math.floor(proportion * N)
@@ -52,10 +51,5 @@ function createBooleanArrayAfterPercentage(proportion, N) {
 	}
 	return outArray;
 }
-//
-// var p = 0.25;
-// var n = 40;
 
-// var myoutArray = createBooleanArrayAfterPercentage(p, n);
-// console.log(myoutArray)
 
