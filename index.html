@@ -29,8 +29,9 @@
   <script>
     //////////////// stimulus.js /////////////////////////////////
     
-    var stimuli = select_group();
+    var stimuli = select_random_group();
     console.log(stimuli)
+    console.log(stimuli.table)
 
     // data one would like to add to __all__ trials, according to:
     // https://www.jspsych.org/overview/data/
@@ -42,7 +43,8 @@
     jsPsych.data.addProperties(
     {
       subject: subject_id,
-      condition: group_assigned
+      group: group_assigned,
+      condition: jsPsych.timelineVariable('condition')
     });
 
     //////////////// test page flows ///////////////////////////////
@@ -136,48 +138,64 @@
       randomize_order: false
     };
 
+    // now, i'm unsure what will be best here....
 
-    var test_procedure_extra = {
-      timeline: [present_story, present_question_or_statement],
-      timeline_variables: stimuli.table,
-      randomize_order: true
-    };
 
-    var test_procedure_noextra = {
-      timeline: [present_story],
-      timeline_variables: stimuli.table,
-      randomize_order: true
-    };
 
-    //generic/precalc?
-    var p = PROPORTION_QUESTION_OR_STATEMENT;
-    var n = stimuli.table.length
-    console.log('n')
-    console.log(n)
 
-    var nonrandomArray = createBooleanArrayAfterPercentage(p, n);
-    console.log(nonrandomArray)
+    // var test_procedure_noextra = {
+    //   timeline: conditional_timeline,
+    //   timeline_variables: stimuli.table,
+    //   randomize_order: false
+    // };
 
-    // var testarray = [];
-    // for (var i = 0; i < n; i++) {
-    //   empty_array.push(i);
-    //     }
-    // console.log(p);
+    // var test_procedure_extra = {
+    //   timeline: [present_story, present_question_or_statement],
+    //   timeline_variables: stimuli.table,
+    //   randomize_order: false
+    // };
+
+
 
     // timeline
     var timeline = [];
 
-    timeline.push(start_screen)
-    timeline.push(practice_procedure)
-    timeline.push(well_done_screen)
-    
 
-    // if(subjectID%2 == 0){
-    //   timeline = timeline.concat(a_trials);
-    // } else {
-    //   timeline = timeline.concat(b_trials);
-    // }
-    timeline.push(test_procedure_noextra)
+    ////////////////////////////////////
+
+            //generic/precalc?
+    var p = PROPORTION_QUESTION_OR_STATEMENT;
+    var n = stimuli.table.length
+    
+    console.log('n')
+    console.log(n)
+
+    var nonrandomArray = createBooleanArrayAfterPercentage(p, n);
+    var shuffledArray = randomArrayShuffle(nonrandomArray);
+
+    for (var i = 0; i < shuffledArray.length; i++) {
+      if (i == true){
+        sub_timeline = [present_story, present_question_or_statement]
+      }
+      else {
+        sub_timeline = [present_story]
+      }
+    };
+
+    var test_procedure = {
+      timeline: sub_timeline,
+      timeline_variables: stimuli.table,
+      randomize_order: false
+    };
+    ///////////////////////////////////
+
+
+    timeline.push(start_screen)
+    // timeline.push(practice_procedure)
+    // timeline.push(well_done_screen)
+    timeline.push(test_procedure)
+
+
     timeline.push(end_screen)
 
     jsPsych.init({
