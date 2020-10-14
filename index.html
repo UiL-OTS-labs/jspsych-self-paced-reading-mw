@@ -18,11 +18,33 @@
 
     <!-- custom styling: font -->
     <style>
-    .stimulus { font-size: 30px; 
-                font-family: monospace, monospace;
-              }
+    .stimulus { 
+      font-size: 30px; 
+      font-family: monospace, monospace;
+    }
+    .ourCanvas { 
+      font-size: 30px; 
+      font-family: monospace, monospace;
+      width: 600;
+      height: 400;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px;width: 150px;
+    }
+
+    .ourCanvas:hover {
+      box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5)
+    }
+
+    h1 {color: rgba(0.4, 0.8, 0.8, 1.0)}
+    h2 {color: rgba(0.4, 0.8, 0.8, 0.8)}
+    h3 {color: rgba(0.4, 0.8, 0.8, 0.6)}
+    h4 {color: rgba(0.4, 0.8, 0.8, 0.4)}
+    h5 {color: rgba(0.4, 0.8, 0.8, 0.2)}
+    h6 {color: rgba(0.4, 0.8, 0.8, 0.1)}
+
     </style>
-</head>
+  </head>
   <body></body>
   <script>
     //////////////// stimulus.js /////////////////////////////////
@@ -128,37 +150,14 @@
       randomize_order: true
     };
 
-    var debrief = {
-      type: 'html-keyboard-response',
-      choices: ['c'],
-      stimulus: '<html>' +' <canvas><link rel="stylesheet" href="css/canvas.html"></canvas>' +
-      '</head>' +
-      '<body>' +
-      '<canvas id="myCanvas" width="666" height="666"></canvas>' +
-      '<h1>This is a heading (h1   {color: rgba(0.4, 0.8, 0.8, 1);}) </h1>' +
-      '<p>This is a paragraph.</p>' +
-      '<h2>This is a heading2 (h2   {color: rgba(0.4, 0.8, 0.8, 0.8);}) </h2>' +
-      '<p>This is a paragraph.</p>' +
-      '<h3>This is a heading3 (h3   {color: rgba(0.4, 0.8, 0.8, 0.6);}) </h3>' +
-      '<p>This is a paragraph.</p>' +
-      '<h4>This is a heading h4   {color: rgba(0.4, 0.8, 0.8, 0.4);} </h4>' +
-      '<p>This is a paragraph.</p>' +
-      '<h5>This is luminance and contrast</h5>' +
-      '</body>' + '</html>'
-    };
-
     // timeline
     var timeline = [];
 
     timeline.push(start_screen)
-    //timeline.push(practice_procedure)
-    //timeline.push(well_done_screen)
+    timeline.push(practice_procedure)
+    timeline.push(well_done_screen)
     timeline.push(test_procedure)
     timeline.push(end_screen)
-
-
-    
-    timeline.push(debrief);
 
     jsPsych.init({
       timeline: timeline,
