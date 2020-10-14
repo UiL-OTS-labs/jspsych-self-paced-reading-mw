@@ -15,6 +15,7 @@
     <script src="stimuli.js"></script>
     <script src="globals.js"></script>
     <script src="instructions.js"></script>
+    <script src="generic.js"></script>
 
     <!-- custom styling: font -->
     <style>
@@ -71,6 +72,19 @@
       words: jsPsych.timelineVariable('words')
     }
 
+    //Usually this is done with "vanilla" JS code, not jsPsych specific code. For example, you might define two sets of trials:
+//     var a_trials = [, trial_2, trial_3];
+//     var b_trials = [trial_4, trial_5, trial_6];
+
+// Then use an if statement to push only the relevant trials onto the timeline.
+
+// if(subjectID%2 == 0){
+//   timeline = timeline.concat(a_trials);
+// } else {
+//   timeline = timeline.concat(b_trials);
+// }
+
+
     var present_question_or_statement = {
     type: 'html-button-response',
     stimulus: jsPsych.timelineVariable('question_or_statement'),
@@ -95,7 +109,7 @@
 
         data.accuracy = acc;
         //console.log(data.accuracy)
-      }
+      },
     }; 
 
     var present_feedback = {
@@ -123,11 +137,21 @@
     };
 
 
-    var test_procedure = {
+    var test_procedure_extra = {
       timeline: [present_story, present_question_or_statement],
       timeline_variables: stimuli.table,
       randomize_order: true
     };
+
+    var test_procedure_noextra = {
+      timeline: [present_story],
+      timeline_variables: stimuli.table,
+      randomize_order: true
+    };
+
+    //generic/precalc?
+    var p = PROPORTION_QUESTION_OR_STATEMENT;
+    console.log(p);
 
     // timeline
     var timeline = [];
@@ -135,7 +159,13 @@
     timeline.push(start_screen)
     timeline.push(practice_procedure)
     timeline.push(well_done_screen)
-    timeline.push(test_procedure)
+    
+    // if(subjectID%2 == 0){
+    //   timeline = timeline.concat(a_trials);
+    // } else {
+    //   timeline = timeline.concat(b_trials);
+    // }
+    timeline.push(test_procedure_noextra)
     timeline.push(end_screen)
 
     jsPsych.init({
