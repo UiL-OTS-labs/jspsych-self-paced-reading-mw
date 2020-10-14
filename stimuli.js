@@ -4,7 +4,7 @@ const practice_items = [
         part: "practice",
         condition: "undefined",
         id: 1,
-        words: "In het tuincentrum konden Martine en Marije genoeg van hun gading vinden. Martine zocht zestig appelbomen van een ziektebestendig ras uit, en Marije twaalf bessenstruiken. Gelukkig was het prima weer om hun nieuwe aanwinsten/meteen/te/planten.",
+        words: "In het tuincentrum konden Martine en Marije genoeg van hun gading vinden. Martine zocht zestig appelbomen van een ziektebestendig ras uit, en Marije twaalf bessenstruiken. Gelukkig was het prima weer om hun nieuwe aanwinsten meteen te planten.",
         question_or_statement: "Er was niets te vinden in het tuincentrum.",
         choices: ["Ja", "Nee"],
         correct: 1

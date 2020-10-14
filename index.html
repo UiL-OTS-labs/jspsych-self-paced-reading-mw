@@ -151,7 +151,18 @@
 
     //generic/precalc?
     var p = PROPORTION_QUESTION_OR_STATEMENT;
-    console.log(p);
+    var n = stimuli.table.length
+    console.log('n')
+    console.log(n)
+
+    var nonrandomArray = createBooleanArrayAfterPercentage(p, n);
+    console.log(nonrandomArray)
+
+    // var testarray = [];
+    // for (var i = 0; i < n; i++) {
+    //   empty_array.push(i);
+    //     }
+    // console.log(p);
 
     // timeline
     var timeline = [];
@@ -160,6 +171,7 @@
     timeline.push(practice_procedure)
     timeline.push(well_done_screen)
     
+
     // if(subjectID%2 == 0){
     //   timeline = timeline.concat(a_trials);
     // } else {

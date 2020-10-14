@@ -53,9 +53,9 @@ function createBooleanArrayAfterPercentage(proportion, N) {
 	return outArray;
 }
 //
-var p = 0.25;
-var n = 40;
+// var p = 0.25;
+// var n = 40;
 
-var myoutArray = createBooleanArrayAfterPercentage(p, n);
-console.log(myoutArray)
+// var myoutArray = createBooleanArrayAfterPercentage(p, n);
+// console.log(myoutArray)
 
