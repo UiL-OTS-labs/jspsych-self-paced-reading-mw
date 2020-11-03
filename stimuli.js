@@ -10,7 +10,7 @@ const PRACTICE_ITEMS = [
                "genoeg#van#hun#gading#vinden./Maar/ze/wilden/"     +
                "graag/binnen/de/lijntjes/kleuren,/dus/moest/"      +
                "er/wel/flink/nagedacht/worden#over#deze#"          +
-               "lijntjes.",
+               "lijntjes.<BR><BR>",
         question_or_statement: "Er was niets te vinden in het tuincentrum.",
         choices: ['Yes','No'],
         correct: 1
