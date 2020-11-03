@@ -39,26 +39,60 @@ jsPsych.plugins["moving-window"] = (function() {
     var current_position = 0;
 
     var n_lines = trial.words.split('<BR>').length;
+
+    //for testing layout, inserted '========...====<BR>' string in both parctice stims
+    var start_stripe = trial.words.split('<BR><BR>')[0];
+    var lexwords = trial.words.split('<BR><BR>')[1];
     
-    // togo
-    console.log('number of lines: ');
-    console.log(n_lines);
+    //generic idea for (line) lexing (arbitrary choice, thinking someone my use 'his/her')
+    var n_woi_false = lexwords.split('/').length;
+    var n_woi_true = lexwords.split('/#').length;
 
-    var n_words_nomeasure_rt = trial.words.split(' / ').length;
+    var woi_all = lexwords.split('/'); //a list of words
+    var woi_measure = lexwords.split('/#'); //also a list of words
 
-    //togo
-    console.log('number of words not to be measured: ');
-    console.log(n_words_nomeasure_rt);
+    //var copy_lexwords = Object.assign({}, lexwords);
 
-    var n_words_measure_rt = trial.words.split(' /# ').length;
+    const sepone = '/#'
+    const sepone_replace = '/';
 
-    console.log('number of words to measured: ');
-    console.log(n_words_measure_rt);
+    const replaced_first = lexwords.replaceAll(sepone, sepone_replace);
 
-    var n_words = trial.words.split(' ').length;
+    const septwo = '/'
+    const septwo_replace = ' ';
+
+    const replaced_all = replaced_first.replaceAll(septwo, septwo_replace);
+
+
+    //this was the original makeup for the plugin, calling it words again 
+    var my_words = replaced_all;
+
+    var n_words = my_words.split(' ').length;
+
+    // debug only
+    console.log('test spec monospace font: ');
+    console.log(start_stripe);
+    console.log('to lex: ');
+    console.log(lexwords);
+    //console.log('number of lines: ');
+    //console.log(n_lines);
+    console.log('this many words altogether ( output not always needed ): ');
+    console.log(n_woi_false);
+    console.log('this many words of HUGE interest for RT output: ');
+    console.log(n_woi_true);
+    
+    console.log('list of all original "words": ');
+    console.log(woi_all);
+    console.log('list of all to be measured words: ');
+    console.log(woi_measure);
+
+    console.log('does this work?')
+    console.log(my_words);
+
+
 
     function create_moving_window(words, position){
-        var word_list = words.split(' ');
+        var word_list = my_words.split(' ');
         var stimulus = word_list.map(function(word, index){
             if (index == position){
                 return word;
@@ -71,7 +105,10 @@ jsPsych.plugins["moving-window"] = (function() {
     }
 
     function show_stimulus(position){
-        display_element.innerHTML = "<p style='font-family: monospace; font-size: 28px;'>" + create_moving_window(trial.words, position) + "</p>";
+        display_element.innerHTML = 
+        "<p style='font-family: monospace; font-size: 28px;'>" + 
+        start_stripe + '<BR>' +
+        create_moving_window(trial.words, position) + "</p>";
 
         jsPsych.pluginAPI.getKeyboardResponse({
             callback_function: after_response,
