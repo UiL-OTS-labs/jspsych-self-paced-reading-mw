@@ -38,11 +38,11 @@ jsPsych.plugins["moving-window"] = (function() {
     
     var current_position = 0;
 
-    var n_lines = trial.words.split('<BR>').length;
+    // var n_lines = trial.words.split('<BR>').length;
 
     //for testing layout, inserted '========...====<BR>' string in both parctice stims
-    var start_stripe = trial.words.split('<BR><BR>')[0];
-    var lexwords = trial.words.split('<BR><BR>')[1];
+    var start_stripe = trial.words.split('<BR>')[0];
+    var lexwords = trial.words.split('<BR>')[1];
     
     //generic idea for (line) lexing (arbitrary choice, thinking someone my use 'his/her')
     var n_woi_false = lexwords.split('/').length;
@@ -106,10 +106,8 @@ jsPsych.plugins["moving-window"] = (function() {
 
     function show_stimulus(position){
         display_element.innerHTML = 
-        "<p style='font-family: monospace; font-size: 28px; text-align: left; margin: 5% 20% 5% 20%;'>" + 
-        start_stripe + '<BR>' +
-        create_moving_window(trial.words, position) + "</p>";
-
+        '<div class="stimulus">' + 
+        "<p>" + create_moving_window(my_words, position) + "</p>" + "</div>";
         jsPsych.pluginAPI.getKeyboardResponse({
             callback_function: after_response,
             valid_responses: [trial.key],

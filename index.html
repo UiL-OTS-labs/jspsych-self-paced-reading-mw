@@ -20,8 +20,17 @@
     <!-- custom styling: font -->
     <style>
 
-    .stimulus {   
-      font-size: 30px; 
+    .stimulus {
+      box-sizing: content-box; 
+      width: 460px;
+      height: 320px;
+      font-size: 22px;
+      background-color: rgba(39, 40, 41, 0.666);
+      color: white;
+      border: 2px solid black;
+      margin: 40px;
+      padding: 40px;
+      text-align: left;
       font-family: monospace, monospace;
       font-weight: normal;
     }
@@ -31,10 +40,21 @@
       margin: 5% 10% 5% 10%;
     }
 
-    .selfpaced {
+/*    .selfpaced {
       text-align: left;
-      margin: 5% 20% 5% 20%;
-    }
+      margin: 5% 20% 5% 20%;*/
+
+
+  /* Total width: 160px + (2 * 20px) + (2 * 8px) = 216px
+     Total height: 80px + (2 * 20px) + (2 * 8px) = 136px
+     Content box width: 160px
+     Content box height: 80px */
+   }
+
+    div {
+      width: center;
+      height: center;
+    } 
 
     kbd {
       border-radius: 2px;
