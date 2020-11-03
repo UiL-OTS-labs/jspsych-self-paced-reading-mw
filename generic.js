@@ -1,15 +1,15 @@
 //generic.js
 
 function randomArrayShuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-  while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-  return array;
+    var currentIndex = array.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    return array;
 }
 
 /**
@@ -27,9 +27,7 @@ function shuffle(a) {
     return a;
 }
 
-
-// maybe not the best idea...
-
+// maybe not the best idea
 /**
  * Creates an array of N items, of which the first (closest) proportion 
  * of items has the value true, and the other (N-proportion) of items
@@ -38,18 +36,16 @@ function shuffle(a) {
  * @param (Integer) N The number of items in the output array.
  */
 function createBooleanArrayAfterPercentage(proportion, N) {
-	var trueValues = Math.floor(proportion * N)
-	var falseValues = N - trueValues
-
-	let outArray = [];
-
-	for(var i=0; i<trueValues;i++){
-		outArray.push(true);
-	}
-	for(var i=0; i<falseValues;i++){
-		outArray.push(false);
-	}
-	return outArray;
+    var trueValues = Math.floor(proportion * N);
+    var falseValues = N - trueValues;
+    let outArray = [];
+    for (var i=0; i<trueValues;i++){
+        outArray.push(true);
+    }
+    for (var i=0; i<falseValues;i++){
+         outArray.push(false);
+    }
+    return outArray;
 }
 
 
