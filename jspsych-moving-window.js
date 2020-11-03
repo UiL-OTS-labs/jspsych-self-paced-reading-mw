@@ -46,19 +46,19 @@ jsPsych.plugins["moving-window"] = (function() {
     
     //generic idea for (line) lexing (arbitrary choice, thinking someone my use 'his/her')
     var n_woi_false = lexwords.split('/').length;
-    var n_woi_true = lexwords.split('/#').length;
+    var n_woi_true = lexwords.split('#').length;
 
     var woi_all = lexwords.split('/'); //a list of words
-    var woi_measure = lexwords.split('/#'); //also a list of words
+    var woi_measure = lexwords.split('#'); //also a list of words
 
     //var copy_lexwords = Object.assign({}, lexwords);
 
-    const sepone = '/#'
-    const sepone_replace = '/';
+    const sepone = '/'
+    const sepone_replace = ' ';
 
     const replaced_first = lexwords.replaceAll(sepone, sepone_replace);
 
-    const septwo = '/'
+    const septwo = '#'
     const septwo_replace = ' ';
 
     const replaced_all = replaced_first.replaceAll(septwo, septwo_replace);
