@@ -19,24 +19,44 @@
 
     <!-- custom styling: font -->
     <style>
-    .stimulus { 
+
+    .stimulus {   
       font-size: 30px; 
       font-family: monospace, monospace;
+      font-weight: normal;
     }
+
+    .instruction {
+      text-align: left;
+      margin: 5% 10% 5% 10%;
+    }
+
+    .selfpaced {
+      text-align: left;
+      margin: 5% 20% 5% 20%;
+    }
+
+    kbd {
+      border-radius: 2px;
+      padding: 2px;
+      border: 1px solid black;
+    }
+
     </style>
   </head>
   <body></body>
   <script>
     //////////////// stimulus.js /////////////////////////////////
     
-    var stimuli = select_random_group();
-    console.log(stimuli)
-    console.log(stimuli.table)
+    var practice_items = getPracticeItems().table;
+
+    console.log(practice_items);
+    
 
     // data one would like to add to __all__ trials, according to:
     // https://www.jspsych.org/overview/data/
     var subject_id = jsPsych.randomization.randomID(8);
-    var group_assigned = stimuli.group_name;
+    var group_assigned = 'todo';
 
     // record the condition assignment in the jsPsych data
     // this adds a property called 'subject' and a property called 'group' to every trial
@@ -128,7 +148,6 @@
       timeline: [
         present_story, 
         present_question_or_statement,
-        present_feedback
         ],
       timeline_variables: practice_items,
       randomize_order: false
@@ -136,32 +155,33 @@
 
     ////////////////////////////////////////////////////////////////////
     // timeline     ////////////////////////////////////
+
     var timeline = []; 
     
-    var p = PROPORTION_QUESTION_OR_STATEMENT;
-    var n = stimuli.table.length
+    // var p = PROPORTION_QUESTION_OR_STATEMENT;
+    // var n = stimuli.table.length
     
-    var nonrandomArray = createBooleanArrayAfterPercentage(p, n);
-    var shuffledArray = randomArrayShuffle(nonrandomArray);
+    // var nonrandomArray = createBooleanArrayAfterPercentage(p, n);
+    // var shuffledArray = randomArrayShuffle(nonrandomArray);
 
-    //var sub_timeline = [];//check/fix this concept
+    // //var sub_timeline = [];//check/fix this concept
 
-    for (var i = 0; i < shuffledArray.length; i++) {
-      if (i == true){
-        sub_timeline = [present_story, present_question_or_statement]
-      }
-      else {
-        sub_timeline = [present_story]
-      }
-    };
+    // for (var i = 0; i < shuffledArray.length; i++) {
+    //   if (i == true){
+    //     sub_timeline = [present_story, present_question_or_statement]
+    //   }
+    //   else {
+    //     sub_timeline = [present_story]
+    //   }
+    // };
 
-    console.log(sub_timeline);
+    // console.log(sub_timeline);
 
-    var test_procedure = {
-      timeline: sub_timeline, //it used to work , but not quite?
-      timeline_variables: stimuli.table,
-      randomize_order: true
-    };
+    // var test_procedure = {
+    //   timeline: sub_timeline, //it used to work , but not quite?
+    //   timeline_variables: stimuli.table,
+    //   randomize_order: true
+    // };
 
     ////////////////////////////////////////////////////////////////////
     //pushing things ////////////////////////////////////
@@ -169,7 +189,7 @@
     timeline.push(start_screen)
     timeline.push(practice_procedure)
     timeline.push(well_done_screen)
-    timeline.push(test_procedure)//to fix q incidence
+    //timeline.push(test_procedure)//to fix q incidence
     timeline.push(end_screen)
 
     jsPsych.init({
