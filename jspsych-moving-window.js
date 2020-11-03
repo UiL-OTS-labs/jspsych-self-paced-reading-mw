@@ -106,7 +106,7 @@ jsPsych.plugins["moving-window"] = (function() {
 
     function show_stimulus(position){
         display_element.innerHTML = 
-        "<p style='font-family: monospace; font-size: 28px;'>" + 
+        "<p style='font-family: monospace; font-size: 28px; text-align: left; margin: 5% 20% 5% 20%;'>" + 
         start_stripe + '<BR>' +
         create_moving_window(trial.words, position) + "</p>";
 
