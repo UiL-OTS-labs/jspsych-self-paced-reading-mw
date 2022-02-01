@@ -1,6 +1,9 @@
 # jspsych-self-paced-reading-mw
 Self-paced reading with moving window implementation, programmed in jsPsych (JavaScript)
 
+# Deprecation warning
+We suggest to use the following experiment instead: https://github.com/UiL-OTS-labs/jspsych-spr-mw
+
 # How to use
 See instruction and some more context at https://github.com/UiL-OTS-labs/jspsych-vislexdec-vp , also for setting up a version with your own folder.
 
